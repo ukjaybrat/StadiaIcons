@@ -1,12 +1,12 @@
 export class IGame {
-	id: 						number;
+	id: 						string;
 	title: 					string;
 	cover: 					string;
 //cover: 					Blob;
 }
 
 export class MyGame implements IGame {
-	id: 						number;
+	id: 						string;
 	title: 					string;
 	cover: 					string;
 //cover: 					Blob;

@@ -1,5 +1,8 @@
-<ul>
-	<li class="text" *ngFor="let game of games | async">
+<ul *ngIf="games">
+	<li class="text" *ngFor="let game of games">
 		{{game.title}}
+		<a routerLink="game/id">
+			<img [src]="game.cover" alt={{game.title}} />
+		</a>
 	</li>
 </ul>
