@@ -1,0 +1,37 @@
+
+:host ::ng-deep li {
+	margin: 0 0.625rem 0 0;
+}
+
+:host ::ng-deep .nav-link {
+	font-family: 'Google Sans',sans-serif;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 500;
+	cursor: pointer;
+	width: 2.5rem;
+	height: 2.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	width: auto;
+	border-radius: 2.5rem;
+	padding: 0 1rem;
+	color: rgba(255,255,255,.9);
+	padding-left: 1rem !important;
+	padding-right: 1rem !important;
+}
+
+:host ::ng-deep .nav-link:hover {
+	border-bottom-left-radius: 45px;
+	border-bottom-right-radius: 45px;
+	border-top-left-radius: 45px;
+	border-top-right-radius: 45px;
+	background-color: rgba(255,255,255,.06);
+}
+
+:host ::ng-deep .nav-link-active {
+	background-color: rgba(255,255,255,.06);
+	color: rgb(255, 119, 61);
+}

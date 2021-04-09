@@ -3,7 +3,6 @@ import { AuthService } from "../../shared/services/auth.service";
 import { Router } from "@angular/router";
 
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,16 +11,12 @@ import { Observable } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
 
-  games: Observable<any[]>;
-
   constructor(
     public authService: AuthService,
     public router: Router,
     public ngZone: NgZone,
 		public firestore: AngularFirestore
-  ) {
-		this.games = firestore.collection('games').valueChanges();
-  }
+  ) { }
 
   ngOnInit() { }
 
