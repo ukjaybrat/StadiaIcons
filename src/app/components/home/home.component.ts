@@ -26,20 +26,6 @@ export class HomeComponent implements OnInit {
 		public firestore: AngularFirestore,
 		public firestorage: AngularFireStorage
   ) {
-		//this.obs_games = firestore.collection('games').valueChanges();
-		// firestore.collection<IGame>('games').snapshotChanges().subscribe(
-		// 	result => {
-		// 		this.games = result;
-
-		// 		this.games.forEach((g) => {
-		// 			g.cover = 'covers/' + g.title;
-		// 			//g.cover = firestorage.storage.ref('covers/'+g.ID);
-		// 		});
-		// 	},
-		// 	error => {
-
-		// 	}
-		// );
 		this.gamesCollection = firestore.collection<IGame>('games');
 		this.gamesCollection.snapshotChanges().pipe(map(actions => {
 			return actions.map(a => {
@@ -52,16 +38,20 @@ export class HomeComponent implements OnInit {
 					this.games = result;
 	
 					this.games.forEach((g) => {
-						var coverUrl: Observable<string | null>;
 
 						const ref = firestorage.storage.ref('covers/'+g.id+'.webp');
-						//coverUrl = ref.getDownloadURL();
 						ref.getDownloadURL().then(
 							url => {
-								g.cover = url;
-								});
-							}
-						);
+								g.coverUrl = url;
+							},
+							error => {
+								const ref = firestorage.storage.ref('covers/_missing.webp');
+								ref.getDownloadURL().then(
+									url => {
+										g.coverUrl = url;
+									});
+							});
+						});
 				},
 				error => {
 	

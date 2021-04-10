@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-layout-header',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutHeaderComponent implements OnInit {
 
-  constructor() { }
+	activeHome: boolean;
+	activeStore: boolean;
+  constructor(
+		public router: Router
+	) {
+		// when route changes detect active tab
+		router.events.subscribe((val) => {
+			this.activeHome  = this.router.url === '/';
+			this.activeStore = this.router.url === '/store';
+		});
+	}
 
   ngOnInit(): void {
+		
   }
 
 }

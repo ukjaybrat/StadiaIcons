@@ -1,8 +1,8 @@
-<ul *ngIf="games">
-	<li class="text" *ngFor="let game of games">
-		{{game.title}}
-		<a routerLink="game/id">
-			<img [src]="game.cover" alt={{game.title}} />
-		</a>
-	</li>
-</ul>
+<div class="card-deck" *ngIf="games">
+	<div class="card text-white bg-dark" *ngFor="let game of games">
+		<img class="card-img-top" [src]="game.coverUrl">
+		<div class="card-body">
+			{{game.title}}
+		</div>
+	</div>
+</div>

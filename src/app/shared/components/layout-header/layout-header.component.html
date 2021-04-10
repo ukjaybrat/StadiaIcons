@@ -3,8 +3,8 @@
 	
 	<div class="collapse navbar-collapse" id="navbar">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item"><app-home-link></app-home-link></li>
-			<li class="nav-item"><app-store-link></app-store-link></li>
+			<li class="nav-item"><a class="nav-link" [ngClass]="{'nav-link-active' : activeHome}" routerLink="/home">Home</a></li>
+			<li class="nav-item"><a class="nav-link" [ngClass]="{'nav-link-active' : activeStore}" routerLink="/store">Store</a></li>
 			<li class="nav-item"><app-search></app-search></li>
 		</ul>
 

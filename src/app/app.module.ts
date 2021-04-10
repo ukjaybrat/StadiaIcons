@@ -19,6 +19,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { StoreComponent } from './components/store/store.component';
+import { GameComponent } from './components/game/game.component';
 
 // Authentication Components
 import { SignInComponent } from './components/auth/sign-in/sign-in.component';
@@ -30,21 +31,20 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 // Header and Footer Components
 import { LayoutHeaderComponent } from './shared/components/layout-header/layout-header.component';
 import { StadiaComponent } from './shared/components/layout-header/stadia/stadia.component';
-import { HomeLinkComponent } from './shared/components/layout-header/home/home.component';
-import { StoreLinkComponent } from './shared/components/layout-header/store/store.component';
 import { SearchComponent } from './shared/components/layout-header/search/search.component';
 import { UserComponent } from './shared/components/layout-header/user/user.component';
 import { LayoutFooterComponent } from './shared/components/layout-footer/layout-footer.component';
 
-// Auth service
+// Services
 import { AuthService } from "./shared/services/auth.service";
-import { GameComponent } from './components/game/game.component';
+import { LocalStorageService } from "./shared/services/localstorage.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     StoreComponent,
+    GameComponent,
 
 		SignInComponent,
     SignUpComponent,
@@ -54,12 +54,9 @@ import { GameComponent } from './components/game/game.component';
 		
     LayoutHeaderComponent,
     StadiaComponent,
-		HomeLinkComponent,
-    StoreLinkComponent,
     SearchComponent,
     UserComponent,
-    LayoutFooterComponent,
-    GameComponent
+    LayoutFooterComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +69,8 @@ import { GameComponent } from './components/game/game.component';
   providers: [
 		AuthService,
 		AngularFirestore,
-		AngularFireStorage
+		AngularFireStorage,
+		LocalStorageService
 	],
   bootstrap: [AppComponent]
 })

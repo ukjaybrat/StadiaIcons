@@ -13,9 +13,31 @@ body {
   height: 						100%;
 }
 
+.container-fluid {
+	padding: 0px 4.5rem 0px 4.5rem;
+}
+
 thumb {
 	border-radius: 0.5625rem;
 	border: 0.375rem solid rgba(0,0,0,0);
 	background-color: rgba(232,234,237,.16);
 	background-clip: padding-box;
+}
+
+h3 {
+	font-family: 'Google Sans',sans-serif;
+	font-size: 1.5rem;
+	line-height: 2rem;
+	font-weight: 500;
+	flex: 1;
+}
+
+.card-footer, .card-body {
+	text-align: center;
+	font-family: 'Google Sans',sans-serif;
+}
+
+.action-button {
+	max-height: 45px;
+	cursor: pointer;
 }
