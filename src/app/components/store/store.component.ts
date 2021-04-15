@@ -7,8 +7,11 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import * as _ from "lodash";
+
 import { IGame, MyGame } from '../game/game';
 import { User } from '../../shared/services/user';
+import { StadiaGamesService } from './stadia-games.service';
 import * as firebase from 'firebase';
 
 @Component({
@@ -19,7 +22,10 @@ import * as firebase from 'firebase';
 export class StoreComponent implements OnInit {
 
 	user: 							User;
-	games:							IGame[];
+	games:							MyGame[];
+	myGames:						MyGame[];
+
+	stadiastore: any;
 
 	gamesUnowned:				MyGame[];
 	gamesWishlist:			MyGame[];
@@ -31,7 +37,8 @@ export class StoreComponent implements OnInit {
     public router: Router,
     public ngZone: NgZone,
 		public firestore: AngularFirestore,
-		public firestorage: AngularFireStorage
+		public firestorage: AngularFireStorage,
+		public stadiaGames: StadiaGamesService
   ) {
 		
   }
@@ -44,128 +51,64 @@ export class StoreComponent implements OnInit {
 		this.user = this.authService.userData;
 
 		// Get all games
-		this.firestore.collection<IGame>('games').snapshotChanges().pipe(map(actions => {
+		this.firestore.collection<MyGame>('games').snapshotChanges().pipe(map(actions => {
 			return actions.map(a => {
-				const data = a.payload.doc.data() as IGame;
+				const data = a.payload.doc.data() as MyGame;
 				data.id = a.payload.doc.id;
-				return { ...data } as IGame;
+				return { ...data } as MyGame;
 			});
 		})).subscribe(
-				result => {
-					this.games = result;
-	
-					this.games.forEach((g) => {
+			result => {
+				this.games = result;
 
-						const ref = this.firestorage.storage.ref('covers/'+g.id+'.webp');
-						ref.getDownloadURL().then(
-							url => {
-								g.coverUrl = url;
-							},
-							error => {
-								const ref = this.firestorage.storage.ref('covers/_missing.webp');
-								ref.getDownloadURL().then(
-									url => {
-										g.coverUrl = url;
-									});
-							});
-						});
-				},
-				error => {
-	
-				}
-			);
-		
-		// Get Wishlist
-		this.firestore
-			.collection('users')
-			.doc(this.user.uid)
-			.collection('games', ref => ref.where('ownership', '==', this.firestore.doc('ownership/' + 1).ref)).snapshotChanges().pipe(map(actions => {
-				return actions.map(a => {
-					const data = a.payload.doc.data() as MyGame;
-					data.id = a.payload.doc.id;
-					return { ...data } as MyGame;
-				});
-			})).subscribe(
-					result => {
-						this.gamesWishlist = result;
-						this.gamesWishlist.forEach(g => {
-							g.title    = this.games.find(f => f.id == g.id).title,
-							g.coverUrl = this.games.find(f => f.id == g.id).coverUrl
-						});
-					},
-					error => {
-		
-					}
-				);
+				this.games.forEach((g) => {
 
-		// Get Claimed Games
-		this.firestore
-			.collection('users')
-			.doc(this.user.uid)
-			.collection('games', ref => ref.where('ownership', '==', this.firestore.doc('ownership/' + 2).ref)).snapshotChanges().pipe(map(actions => {
-				return actions.map(a => {
-					const data = a.payload.doc.data() as MyGame;
-					data.id = a.payload.doc.id;
-					return { ...data } as MyGame;
-				});
-			})).subscribe(
-					result => {
-						this.gamesClaimed = result;
-						this.gamesClaimed.forEach(g => {
-							g.title    = this.games.find(f => f.id == g.id).title,
-							g.coverUrl = this.games.find(f => f.id == g.id).coverUrl
-						});
-					},
-					error => {
-		
-					}
-				);
-
-			// Get Purchased Games
-			this.firestore
-				.collection('users')
-				.doc(this.user.uid)
-				.collection('games', ref => ref.where('ownership', '==', this.firestore.doc('ownership/' + 3).ref)).snapshotChanges().pipe(map(actions => {
-					return actions.map(a => {
-						const data = a.payload.doc.data() as MyGame;
-						data.id = a.payload.doc.id;
-						return { ...data } as MyGame;
-					});
-				})).subscribe(
-						result => {
-							this.gamesPurchased = result;
-							this.gamesPurchased.forEach(g => {
-								g.title    = this.games.find(f => f.id == g.id).title,
-								g.coverUrl = this.games.find(f => f.id == g.id).coverUrl
-							});
+					const ref = this.firestorage.storage.ref('covers/'+g.id+'.webp');
+					ref.getDownloadURL().then(
+						url => {
+							g.coverUrl = url;
 						},
 						error => {
-			
-						}
-					);
-
-			// Get Unowned Games
-			this.firestore
-				.collection('users')
-				.doc(this.user.uid)
-				.collection('games', ref => ref.where('ownership', '==', this.firestore.doc('ownership/' + 0).ref)).snapshotChanges().pipe(map(actions => {
-					return actions.map(a => {
-						const data = a.payload.doc.data() as MyGame;
-						data.id = a.payload.doc.id;
-						return { ...data } as MyGame;
-					});
-				})).subscribe(
-						result => {
-							this.gamesUnowned = result;
-							this.gamesUnowned.forEach(g => {
-								g.title    = this.games.find(f => f.id == g.id).title,
-								g.coverUrl = this.games.find(f => f.id == g.id).coverUrl
+							const ref = this.firestorage.storage.ref('covers/_missing.webp');
+							ref.getDownloadURL().then(
+								url => {
+									g.coverUrl = url;
 							});
-						},
-						error => {
-			
-						}
-					);
+					});
+				});
+			},
+			error => {
+
+			}
+		);
+
+		// Get MyGames
+		this.firestore.collection('users').doc(this.user.uid).collection('games').snapshotChanges().pipe(map(actions => {
+			return actions.map(a => {
+				const data = a.payload.doc.data() as MyGame;
+				data.id = a.payload.doc.id;
+				return { ...data } as MyGame;
+			});
+		})).subscribe(
+			result => {
+				this.myGames = result;
+
+				this.myGames.forEach((g) => {
+					this.games.find(f => f.id == g.id).ownership 			= g.ownership;
+					this.games.find(f => f.id == g.id).status 				= g.status;
+					this.games.find(f => f.id == g.id).recentlyPlayed = g.recentlyPlayed;
+					this.games.find(f => f.id == g.id).folder 				= g.folder;
+				});
+
+				this.gamesWishlist 	= this.games.filter(g => g.ownership && g.ownership.m_.path.segments[6] == "1");
+				this.gamesClaimed 	= this.games.filter(g => g.ownership && g.ownership.m_.path.segments[6] == "2");
+				this.gamesPurchased = this.games.filter(g => g.ownership && g.ownership.m_.path.segments[6] == "3");
+				this.gamesUnowned		= this.games.filter(g => g.ownership == null || g.ownership.m_.path.segments[6] == "0");
+			},
+			error => {
+
+			}
+		);
 	}
 
 	private wishlistAdd(game: IGame) {

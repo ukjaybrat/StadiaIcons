@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from '../../components/home/home.component';
 import { StoreComponent } from '../../components/store/store.component';
+import { SettingsComponent } from '../../components/settings/settings.component';
 
 import { SignInComponent } from '../../components/auth/sign-in/sign-in.component';
 import { SignUpComponent } from '../../components/auth/sign-up/sign-up.component';
@@ -13,13 +14,14 @@ import { VerifyEmailComponent } from '../../components/auth/verify-email/verify-
 import { AuthGuard } from "../../shared/guard/auth.guard";
 
 const routes: Routes = [
-  { path: '', 										component: HomeComponent},
-  { path: 'home', 								redirectTo: '', pathMatch: 'full'},
-  { path: 'store', 								component: StoreComponent},
+  { path: '', 										component: HomeComponent, 						canActivate: [AuthGuard] },
+  { path: 'home', 								redirectTo: '', pathMatch: 'full', 		canActivate: [AuthGuard] },
+  { path: 'store', 								component: StoreComponent, 			 			canActivate: [AuthGuard] },
+  { path: 'settings', 						component: SettingsComponent, 			 	canActivate: [AuthGuard] },
 
 	{ path: 'sign-in', 							component: SignInComponent},
   { path: 'register-user', 				component: SignUpComponent},
-  { path: 'dashboard', 						component: DashboardComponent, 			 canActivate: [AuthGuard] },
+  { path: 'dashboard', 						component: DashboardComponent, 			 	canActivate: [AuthGuard] },
   { path: 'forgot-password', 			component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent }
 ];

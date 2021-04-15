@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 // Reactive Form
 import { ReactiveFormsModule } from "@angular/forms";
@@ -20,6 +21,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { StoreComponent } from './components/store/store.component';
 import { GameComponent } from './components/game/game.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 // Authentication Components
 import { SignInComponent } from './components/auth/sign-in/sign-in.component';
@@ -32,12 +34,16 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LayoutHeaderComponent } from './shared/components/layout-header/layout-header.component';
 import { StadiaComponent } from './shared/components/layout-header/stadia/stadia.component';
 import { SearchComponent } from './shared/components/layout-header/search/search.component';
-import { UserComponent } from './shared/components/layout-header/user/user.component';
 import { LayoutFooterComponent } from './shared/components/layout-footer/layout-footer.component';
 
 // Services
 import { AuthService } from "./shared/services/auth.service";
+import { StadiaGamesService } from './components/store/stadia-games.service';
 import { LocalStorageService } from "./shared/services/localstorage.service";
+
+// Other Modules
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -45,6 +51,7 @@ import { LocalStorageService } from "./shared/services/localstorage.service";
     HomeComponent,
     StoreComponent,
     GameComponent,
+    SettingsComponent,
 
 		SignInComponent,
     SignUpComponent,
@@ -55,22 +62,28 @@ import { LocalStorageService } from "./shared/services/localstorage.service";
     LayoutHeaderComponent,
     StadiaComponent,
     SearchComponent,
-    UserComponent,
     LayoutFooterComponent
   ],
   imports: [
+		BrowserAnimationsModule,
     BrowserModule,
-    AppRoutingModule,
+    HttpClientModule,
+		AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSlideToggleModule  
   ],
   providers: [
 		AuthService,
 		AngularFirestore,
 		AngularFireStorage,
+		StadiaGamesService,
 		LocalStorageService
+	],
+	exports: [
+		MatSlideToggleModule
 	],
   bootstrap: [AppComponent]
 })

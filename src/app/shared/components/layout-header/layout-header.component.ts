@@ -8,15 +8,20 @@ import { Router } from "@angular/router";
 })
 export class LayoutHeaderComponent implements OnInit {
 
-	activeHome: boolean;
-	activeStore: boolean;
+	activeHome: 		boolean;
+	activeStore: 		boolean;
+	activeSettings: boolean;
+	activeUser: 		boolean;
+
   constructor(
 		public router: Router
 	) {
 		// when route changes detect active tab
 		router.events.subscribe((val) => {
-			this.activeHome  = this.router.url === '/';
-			this.activeStore = this.router.url === '/store';
+			this.activeHome  		= this.router.url === '/';
+			this.activeStore 		= this.router.url === '/store';
+			this.activeSettings = this.router.url === '/settings';
+			this.activeUser 		= this.router.url === '/dashboard';
 		});
 	}
 
