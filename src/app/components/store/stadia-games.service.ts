@@ -11,7 +11,7 @@ export class StadiaGamesService {
     private http: HttpClient
     ) { }
 
-	read() {
-		return this.http.get('https://stadia.google.com/store/list/3');
+	public read() {
+		
 	}
 }

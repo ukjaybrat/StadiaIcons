@@ -45,6 +45,7 @@ export class StoreComponent implements OnInit {
 
   ngOnInit() {
 		this.populateData();
+		this.readStadiaGames();
 	}
 
 	private populateData() {
@@ -109,6 +110,10 @@ export class StoreComponent implements OnInit {
 
 			}
 		);
+	}
+
+	private readStadiaGames() {
+		this.stadiaGames.read();
 	}
 
 	private wishlistAdd(game: IGame) {

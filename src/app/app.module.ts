@@ -41,7 +41,7 @@ import { AuthService } from "./shared/services/auth.service";
 import { StadiaGamesService } from './components/store/stadia-games.service';
 import { LocalStorageService } from "./shared/services/localstorage.service";
 
-// Other Modules
+// Material Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
